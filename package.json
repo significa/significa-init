@@ -73,7 +73,7 @@
     "lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\"",
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && cp -r src/templates lib",
-    "test": "echo \"No tests!\" && exit 0"
+    "test": "echo \"No tests!\" && exit 1"
   },
   "types": "lib/index.d.ts",
   "directories": {
