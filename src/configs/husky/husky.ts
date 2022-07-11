@@ -2,17 +2,28 @@ import path from 'path'
 import { cwd } from 'process'
 
 import copyDir from '../../utils/copyDir'
+import { gitInit } from '../../utils/git'
 import log from '../../utils/log'
-import { addPackage, addScript } from '../../utils/package'
+import { addPackages, addScript } from '../../utils/package'
 
-export function huskyConfig() {
+export async function huskyConfig() {
   const spinner = log.step('Adding Husky...')
 
   try {
+    gitInit()
     copyDir(path.join(__dirname, './to_copy').toString(), cwd())
-    addPackage('husky', { dev: true })
+    await addPackages(
+      [
+        'husky',
+        '@commitlint/cli',
+        '@commitlint/config-conventional',
+        'lint-staged',
+      ],
+      { dev: true }
+    )
     addScript('postinstall', 'husky install')
-  } catch {
+  } catch (e) {
+    console.log(e)
     return spinner.fail('Failed to add Husky.')
   }
 

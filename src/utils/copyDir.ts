@@ -1,7 +1,7 @@
-import execa from 'execa'
+import { execSync } from 'child_process'
 
 async function copyDir(source: string, target: string) {
-  return execa('cp', ['-r', `${source}/`, target])
+  execSync(`cp -r ${source}/ ${target}`)
 }
 
 export default copyDir

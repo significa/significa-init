@@ -26,7 +26,7 @@ export function typescriptConfig() {
 
   // Add script
   try {
-    addScript('validate:types', 'tsc')
+    addScript('validate:types', 'tsc --noEmit')
   } catch {
     return spinner.fail(
       'Failed to add typescript script to package.json. Please refer to https://github.com/significa/significa-style for instructions on how to configure typescript.'

@@ -1,28 +1,21 @@
+import { execSync } from 'child_process'
+import fs from 'fs'
 import path from 'path'
-
-import execa from 'execa'
 
 import log from './log'
 
-async function gitInit(name: string) {
-  const cwd = path.join(process.cwd(), name)
+export async function gitInit() {
+  const cwd = process.cwd()
+
+  // Check if git folder exists
+  const gitFolder = path.join(cwd, '.git')
+  if (fs.existsSync(gitFolder)) {
+    return
+  }
 
   const spinner = log.step('Initializing git repository')
-  await execa('rm', ['-rf', '.git'], { cwd })
-  await execa('git', ['init'], { cwd })
+  execSync(`rm -rf .git`)
+  execSync(`git init`)
 
   spinner.succeed()
 }
-
-async function gitCommit(name: string, message: string) {
-  const cwd = path.join(process.cwd(), name)
-
-  const spinner = log.step('Committing dependencies')
-
-  await execa('git', ['add', '.'], { cwd })
-  await execa('git', ['commit', '-m', message, '--no-verify'], { cwd })
-
-  spinner.succeed()
-}
-
-export { gitInit, gitCommit }

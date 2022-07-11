@@ -6,9 +6,9 @@ import jsonfile from 'jsonfile'
 import log from '../utils/log'
 import { addPackages, addScript } from '../utils/package'
 
-export function eslintConfig() {
+export async function eslintConfig() {
   const spinner = log.step('Adding ESLint configuration...')
-  addPackages(['eslint', '@significa/eslint-config'], { dev: true })
+  await addPackages(['eslint', '@significa/eslint-config'], { dev: true })
 
   // Add config file
   const configPath = path.join(process.cwd(), '.eslintrc.json')

@@ -4,9 +4,9 @@ import path from 'path'
 import log from '../utils/log'
 import { addPackages, addScript } from '../utils/package'
 
-export function prettierConfig() {
+export async function prettierConfig() {
   const spinner = log.step('Adding Prettier configuration...')
-  addPackages(['prettier', '@significa/prettier-config'], { dev: true })
+  await addPackages(['prettier', '@significa/prettier-config'], { dev: true })
 
   // Add config file
   const configPath = path.join(process.cwd(), '.prettierrc.js')

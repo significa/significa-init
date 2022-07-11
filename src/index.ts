@@ -1,6 +1,7 @@
+import { execSync } from 'child_process'
+
 import { Command, flags } from '@oclif/command'
 import chalk from 'chalk'
-import execa from 'execa'
 import figlet from 'figlet'
 import inquirer from 'inquirer'
 
@@ -46,27 +47,27 @@ class SignificaStart extends Command {
             {
               name: 'Prettier',
               value: 'prettier',
-              checked: true,
+              checked: false,
             },
             {
               name: 'Typescript',
               value: 'typescript',
-              checked: true,
+              checked: false,
             },
             {
               name: 'Github actions',
               value: 'gh-actions',
-              checked: true,
+              checked: false,
             },
             {
               name: 'Github templates',
               value: 'gh-templates',
-              checked: true,
+              checked: false,
             },
             {
               name: 'Husky',
               value: 'husky',
-              checked: true,
+              checked: false,
             },
           ],
         })
@@ -77,7 +78,7 @@ class SignificaStart extends Command {
     }
 
     for (const configKey of configs) {
-      runConfig(configKey)
+      await runConfig(configKey)
     }
 
     // const name =
@@ -151,7 +152,7 @@ class SignificaStart extends Command {
     // Install dependencies
     const packageManager = await getPackageManager()
     const installSpinner = log.step('Installing dependencies')
-    await execa(packageManager, ['install'], { cwd: process.cwd() })
+    execSync(`${packageManager} install`)
     installSpinner.succeed()
 
     log.success('Done! 🎉')

@@ -6,20 +6,26 @@ import { huskyConfig } from './husky'
 import { prettierConfig } from './prettier'
 import { typescriptConfig } from './typescript'
 
-export function runConfig(key: ConfigKey) {
+export async function runConfig(key: ConfigKey) {
   switch (key) {
     case 'eslint':
-      return eslintConfig()
+      await eslintConfig()
+      break
     case 'prettier':
-      return prettierConfig()
+      await prettierConfig()
+      break
     case 'typescript':
-      return typescriptConfig()
+      await typescriptConfig()
+      break
     case 'gh-actions':
-      return githubActionsConfig()
+      await githubActionsConfig()
+      break
     case 'gh-templates':
-      return githubTemplatesConfig()
+      await githubTemplatesConfig()
+      break
     case 'husky':
-      return huskyConfig()
+      await huskyConfig()
+      break
     default:
       return null
   }

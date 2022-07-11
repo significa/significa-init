@@ -1,3 +1,4 @@
+import { execSync } from 'child_process'
 import fs from 'fs'
 import path from 'path'
 
@@ -7,31 +8,31 @@ import jsonfile from 'jsonfile'
 import { PackageManager } from '../types'
 
 type PackageOptions = {
-  dev: boolean
+  dev?: boolean
 }
 
-export function addPackage(name: string, options?: PackageOptions) {
-  const packagePath = path.join(process.cwd(), 'package.json')
-  const packageContent = jsonfile.readFileSync(packagePath)
-  if (!packageContent.dependencies) {
-    packageContent.dependencies = {}
+export async function addPackage(name: string, options?: PackageOptions) {
+  const packageManager = await getPackageManager()
+  switch (packageManager) {
+    case 'npm':
+      execSync(`npm install ${name} ${options?.dev ? '--save-dev' : '--save'}`)
+      break
+    case 'yarn':
+      execSync(`yarn add ${name} ${options?.dev ? '--dev' : ''}`, {
+        stdio: 'ignore',
+      })
+      break
+    default:
+      throw new Error(`Unknown package manager: ${packageManager}`)
   }
-  if (!packageContent.devDependencies) {
-    packageContent.devDependencies = {}
-  }
-
-  if (options?.dev) {
-    packageContent.devDependencies[name] = 'latest'
-  } else {
-    packageContent.dependencies[name] = 'latest'
-  }
-
-  jsonfile.writeFileSync(packagePath, packageContent, { spaces: 2 })
 }
 
-export function addPackages(packages: string[], options?: PackageOptions) {
-  packages.forEach((packageName) => {
-    addPackage(packageName, options)
+export async function addPackages(
+  packages: string[],
+  options?: PackageOptions
+) {
+  packages.forEach(async (packageName) => {
+    await addPackage(packageName, options)
   })
 }
 
@@ -67,6 +68,17 @@ export async function getPackageManager(): Promise<PackageManager> {
     type: 'list',
     choices: ['npm', 'yarn'],
   })
+
+  switch (userChoice.packageManager) {
+    case 'npm':
+      fs.writeFileSync(packageLockPath, '')
+      break
+    case 'yarn':
+      fs.writeFileSync(yarnLockPath, '')
+      break
+    default:
+      throw new Error('Invalid option')
+  }
 
   return userChoice.packageManager as PackageManager
 }
