@@ -1,11 +1,13 @@
 import { Command, flags } from '@oclif/command'
 import chalk from 'chalk'
+import execa from 'execa'
 import figlet from 'figlet'
 import inquirer from 'inquirer'
 
 import { runConfig } from './configs/runConfig'
 import { isConfigKeyArray } from './types'
 import log from './utils/log'
+import { getPackageManager } from './utils/package'
 
 class SignificaStart extends Command {
   static description = 'Significa project starter'
@@ -46,7 +48,7 @@ class SignificaStart extends Command {
             },
             {
               name: 'Typescript',
-              value: 'ts',
+              value: 'typescript',
             },
             {
               name: 'Github actions',
@@ -136,22 +138,13 @@ class SignificaStart extends Command {
     // log.info('Git')
     // await gitInit(name)
 
-    // // Install dependencies
-    // log.info('Install')
-    // const installSpinner = log.step('Installing dependencies')
-    // const packageManager = configs === 'react-native' ? 'yarn' : 'npm'
-    // await execa(packageManager, ['install'], { cwd: name })
-    // installSpinner.succeed()
+    // Install dependencies
+    const packageManager = await getPackageManager()
+    const installSpinner = log.step('Installing dependencies')
+    await execa(packageManager, ['install'], { cwd: process.cwd() })
+    installSpinner.succeed()
 
-    // // Commit dependencies
-    // log.info('Commit')
-    // await gitCommit(name, 'Initial files')
-
-    // log.success(
-    //   `Project created! \n\n  Type in ${chalk.blue(
-    //     `cd ${name}`
-    //   )} and happy coding!\n`
-    // )
+    log.success('Done! 🎉')
   }
 }
 

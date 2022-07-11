@@ -1,6 +1,10 @@
+import fs from 'fs'
 import path from 'path'
 
+import inquirer from 'inquirer'
 import jsonfile from 'jsonfile'
+
+import { PackageManager } from '../types'
 
 type PackageOptions = {
   dev: boolean
@@ -44,4 +48,25 @@ export function addScript(key: string, value: string, safe = false) {
 
   content.scripts[key] = value
   jsonfile.writeFileSync(packagePath, content, { spaces: 2 })
+}
+
+export async function getPackageManager(): Promise<PackageManager> {
+  // detects package manager, if package-lock.json exists, it's probably npm, if yarn.lock exists, it's probably yarn. Otherwise, ask
+  const packageLockPath = path.join(process.cwd(), 'package-lock.json')
+  const yarnLockPath = path.join(process.cwd(), 'yarn.lock')
+  if (fs.existsSync(packageLockPath)) {
+    return 'npm'
+  }
+  if (fs.existsSync(yarnLockPath)) {
+    return 'yarn'
+  }
+
+  const userChoice = await inquirer.prompt({
+    name: 'packageManager',
+    message: 'Which package manager do you use?',
+    type: 'list',
+    choices: ['npm', 'yarn'],
+  })
+
+  return userChoice.packageManager as PackageManager
 }
