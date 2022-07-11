@@ -4,7 +4,7 @@ import { cwd } from 'process'
 import copyDir from '../../utils/copyDir'
 import log from '../../utils/log'
 
-export function githubTemplates() {
+export function githubTemplatesConfig() {
   const spinner = log.step('Adding Github templates...')
 
   try {

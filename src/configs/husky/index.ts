@@ -1,0 +1,1 @@
+export { huskyConfig } from './husky'

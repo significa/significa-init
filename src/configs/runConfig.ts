@@ -1,7 +1,8 @@
 import { ConfigKey } from '../types'
 import { eslintConfig } from './eslint'
-import { githubActions } from './githubActions'
-import { githubTemplates } from './githubTemplates'
+import { githubActionsConfig } from './githubActions'
+import { githubTemplatesConfig } from './githubTemplates'
+import { huskyConfig } from './husky'
 import { prettierConfig } from './prettier'
 import { typescriptConfig } from './typescript'
 
@@ -14,9 +15,11 @@ export function runConfig(key: ConfigKey) {
     case 'typescript':
       return typescriptConfig()
     case 'gh-actions':
-      return githubActions()
+      return githubActionsConfig()
     case 'gh-templates':
-      return githubTemplates()
+      return githubTemplatesConfig()
+    case 'husky':
+      return huskyConfig()
     default:
       return null
   }

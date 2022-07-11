@@ -4,7 +4,7 @@ import { cwd } from 'process'
 import copyDir from '../../utils/copyDir'
 import log from '../../utils/log'
 
-export function githubActions() {
+export function githubActionsConfig() {
   const spinner = log.step('Adding Github actions...')
 
   try {

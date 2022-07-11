@@ -1,1 +1,1 @@
-export { githubTemplates } from './githubTemplates'
+export { githubTemplatesConfig } from './githubTemplates'

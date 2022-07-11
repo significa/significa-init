@@ -1,1 +1,1 @@
-export { githubActions } from './githubActions'
+export { githubActionsConfig } from './githubActions'
