@@ -31,7 +31,7 @@ export function addPackages(packages: string[], options?: PackageOptions) {
   })
 }
 
-function addScript(key: string, value: string, safe = false) {
+export function addScript(key: string, value: string, safe = false) {
   const packagePath = path.join(process.cwd(), 'package.json')
   const content = jsonfile.readFileSync(packagePath)
   if (!content.scripts) {
@@ -45,5 +45,3 @@ function addScript(key: string, value: string, safe = false) {
   content.scripts[key] = value
   jsonfile.writeFileSync(packagePath, content, { spaces: 2 })
 }
-
-export default addScript

@@ -4,16 +4,17 @@ import path from 'path'
 import jsonfile from 'jsonfile'
 
 import log from '../utils/log'
-import { addPackages } from '../utils/package'
+import { addPackages, addScript } from '../utils/package'
 
 export function eslintConfig() {
-  log.info('Adding ESLint configuration...')
+  const spinner = log.step('Adding ESLint configuration...')
   addPackages(['eslint', '@significa/eslint-config'], { dev: true })
 
-  const eslintrcPath = path.join(process.cwd(), '.eslintrc.json')
+  // Add config file
+  const configPath = path.join(process.cwd(), '.eslintrc.json')
 
-  if (fs.existsSync(eslintrcPath)) {
-    return log.error(
+  if (fs.existsSync(configPath)) {
+    return spinner.fail(
       '.eslintrc.json already exists. To avoid conflicts, we have not modified it. Please refer to https://github.com/significa/significa-style for instructions on how to configure the eslint plugin.'
     ) // TODO: Add link
   }
@@ -21,5 +22,16 @@ export function eslintConfig() {
   const eslintrcContent = {
     extends: ['@significa'],
   }
-  jsonfile.writeFileSync(eslintrcPath, eslintrcContent, { spaces: 2 })
+  jsonfile.writeFileSync(configPath, eslintrcContent, { spaces: 2 })
+
+  // Add script
+  try {
+    addScript('lint', 'eslint "src/**/*.{js,jsx,ts,tsx}"')
+  } catch {
+    return spinner.fail(
+      'Failed to add eslint script to package.json. Please refer to https://github.com/significa/significa-style for instructions on how to configure eslint.'
+    )
+  }
+
+  spinner.succeed('Added ESLint configuration')
 }

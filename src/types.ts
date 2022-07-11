@@ -1,7 +1,9 @@
-export type ConfigKey = 'eslint'
+const configKeys = ['eslint', 'prettier'] as const
+
+export type ConfigKey = typeof configKeys[number]
 
 export const isConfigKey = (key: string): key is ConfigKey => {
-  return ['eslint'].includes(key)
+  return configKeys.includes(key as ConfigKey)
 }
 
 export const isConfigKeyArray = (keys: unknown): keys is ConfigKey[] => {
