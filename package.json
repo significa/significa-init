@@ -1,0 +1,83 @@
+{
+  "name": "@significa/init",
+  "description": "Opinionated Significa's CLI to add configurations to newly created projects.",
+  "version": "0.0.1",
+  "author": "Significa Lda. <hello@significa.co>",
+  "bin": {
+    "significa-init": "bin/run"
+  },
+  "bugs": {
+    "url": "https://github.com/significa/significa-init/issues"
+  },
+  "dependencies": {
+    "@oclif/command": "^1.8.0",
+    "@oclif/config": "^1.17.0",
+    "@oclif/plugin-help": "^3.2.2",
+    "@types/figlet": "^1.5.4",
+    "@types/inquirer": "^7.3.3",
+    "chalk": "^4.1.1",
+    "cli-ux": "^5.6.3",
+    "execa": "^5.1.1",
+    "figlet": "^1.5.0",
+    "inquirer": "^8.1.2",
+    "jsonfile": "^6.1.0",
+    "ora": "^5.4.1",
+    "path": "^0.12.7",
+    "recursive-readdir": "^2.2.2",
+    "tmp": "^0.2.1",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/github": "^8.0.4",
+    "@semantic-release/npm": "^9.0.1",
+    "@semantic-release/release-notes-generator": "^10.0.3",
+    "@significa/eslint-config": "2.0.0",
+    "@significa/prettier-config": "2.0.0",
+    "@significa/tsconfig-config": "2.0.0",
+    "@types/jsonfile": "^6.0.1",
+    "@types/node": "^16.4.0",
+    "@types/react-dom": "^17.0.9",
+    "@types/recursive-readdir": "^2.2.0",
+    "@types/tmp": "^0.2.1",
+    "eslint": "^7.31.0",
+    "husky": "^7.0.1",
+    "jest": "^27.2.1",
+    "react": "^17.0.2",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib"
+  ],
+  "homepage": "https://github.com/significa/significa-init",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "oclif": {
+    "bin": "significa-init"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/significa/significa-init.git"
+  },
+  "scripts": {
+    "lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\"",
+    "posttest": "eslint . --ext .ts --config .eslintrc",
+    "prepack": "rm -rf lib && tsc -b && cp -r src/templates lib",
+    "test": "echo \"No tests!\" && exit 0"
+  },
+  "types": "lib/index.d.ts",
+  "directories": {
+    "test": "test"
+  }
+}

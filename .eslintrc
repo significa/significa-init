@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "@significa"
+  ],
+  "rules": {
+    "import/default": "off",
+    "import/no-named-as-default-member": "off",
+    "object-curly-spacing": "off",
+    "indent": "off",
+    "unicorn/filename-case": "off",
+    "no-process-exit": "off",
+    "unicorn/no-process-exit": "off",
+    "no-console": "off",
+    "no-extraneous-require": "off",
+    "node/no-extraneous-require": "off",
+    "node/no-missing-require": "off",
+    "unicorn/no-abusive-eslint-disable": "off",
+    "node/no-unpublished-require": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+  }
+}
