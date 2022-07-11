@@ -55,6 +55,10 @@ class SignificaStart extends Command {
               value: 'gh-actions',
             },
             {
+              name: 'Github templates',
+              value: 'gh-templates',
+            },
+            {
               name: 'Husky',
               value: 'husky',
             },

@@ -1,5 +1,10 @@
-const configKeys = ['eslint', 'prettier', 'typescript'] as const
-
+const configKeys = [
+  'eslint',
+  'prettier',
+  'typescript',
+  'gh-actions',
+  'gh-templates',
+] as const
 export type ConfigKey = typeof configKeys[number]
 
 export const isConfigKey = (key: string): key is ConfigKey => {
