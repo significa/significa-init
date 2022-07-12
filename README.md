@@ -1,9 +1,9 @@
 # significa-init
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/@significa/start.svg)](https://npmjs.org/package/significa/start)
-[![Downloads/week](https://img.shields.io/npm/dw/@significa/start.svg)](https://npmjs.org/package/@significa/start)
-[![License](https://img.shields.io/npm/l/@significa/start.svg)](https://github.com/significa/significa-start/blob/master/package.json)
+[![Version](https://img.shields.io/npm/v/@significa/init.svg)](https://npmjs.org/package/significa/init)
+[![Downloads/week](https://img.shields.io/npm/dw/@significa/init.svg)](https://npmjs.org/package/@significa/init)
+[![License](https://img.shields.io/npm/l/@significa/init.svg)](https://github.com/significa/significa-init/blob/main/package.json)
 
 Opinionated Significa's CLI to add configurations to newly created projects.
 
@@ -13,8 +13,8 @@ Opinionated Significa's CLI to add configurations to newly created projects.
 ## Commands
 
 - Regular: `npx @significa/init`;
-- Help: `npx @significa/start --help`;
-- Version: `npx @significa/start --version`;
+- Help: `npx @significa/init --help`;
+- Version: `npx @significa/init --version`;
 
 
 Run `npm link` in the directory.
