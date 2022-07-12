@@ -47,27 +47,27 @@ class SignificaStart extends Command {
             {
               name: 'Prettier',
               value: 'prettier',
-              checked: false,
+              checked: true,
             },
             {
               name: 'Typescript',
               value: 'typescript',
-              checked: false,
+              checked: true,
             },
             {
               name: 'Github actions',
               value: 'gh-actions',
-              checked: false,
+              checked: true,
             },
             {
               name: 'Github templates',
               value: 'gh-templates',
-              checked: false,
+              checked: true,
             },
             {
               name: 'Husky',
               value: 'husky',
-              checked: false,
+              checked: true,
             },
           ],
         })
