@@ -1,7 +1,7 @@
 # significa-init
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/@significa/init.svg)](https://npmjs.org/package/significa/init)
+[![Version](https://img.shields.io/npm/v/@significa/init.svg)](https://npmjs.org/package/@significa/init)
 [![Downloads/week](https://img.shields.io/npm/dw/@significa/init.svg)](https://npmjs.org/package/@significa/init)
 [![License](https://img.shields.io/npm/l/@significa/init.svg)](https://github.com/significa/significa-init/blob/main/package.json)
 
