@@ -1,1 +1,0 @@
-export { githubActionsConfig } from './githubActions'

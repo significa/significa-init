@@ -77,6 +77,8 @@ class SignificaStart extends Command {
       return log.error('Invalid configs selected!')
     }
 
+    const packageManager = await getPackageManager() // Run once to force creation of package-lock or yarn.lock
+
     for (const configKey of configs) {
       await runConfig(configKey)
     }
@@ -150,7 +152,6 @@ class SignificaStart extends Command {
     // await gitInit(name)
 
     // Install dependencies
-    const packageManager = await getPackageManager()
     const installSpinner = log.step('Installing dependencies')
     execSync(`${packageManager} install`)
     installSpinner.succeed()

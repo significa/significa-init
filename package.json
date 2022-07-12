@@ -1,7 +1,7 @@
 {
   "name": "@significa/init",
   "description": "Opinionated Significa's CLI to add configurations to newly created projects.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Significa Lda. <hello@significa.co>",
   "bin": {
     "significa-init": "bin/run"
@@ -72,7 +72,7 @@
   "scripts": {
     "lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\"",
     "posttest": "eslint . --ext .ts --config .eslintrc",
-    "prepack": "tsc -b",
+    "prepack": "rm -rf lib && tsc -b && cp -r src/templates lib",
     "test": "echo \"No tests!\" && exit 0"
   },
   "types": "lib/index.d.ts",

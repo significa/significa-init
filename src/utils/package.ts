@@ -31,9 +31,9 @@ export async function addPackages(
   packages: string[],
   options?: PackageOptions
 ) {
-  packages.forEach(async (packageName) => {
+  for (const packageName of packages) {
     await addPackage(packageName, options)
-  })
+  }
 }
 
 export function addScript(key: string, value: string, safe = false) {
