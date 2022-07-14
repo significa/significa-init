@@ -1,7 +1,7 @@
 {
   "name": "@significa/init",
   "description": "Opinionated Significa's CLI to add configurations to newly created projects.",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "Significa Lda. <hello@significa.co>",
   "bin": {
     "significa-init": "bin/run"
