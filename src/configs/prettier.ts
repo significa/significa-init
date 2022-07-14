@@ -2,22 +2,32 @@ import fs from 'fs'
 import path from 'path'
 
 import log from '../utils/log'
-import { addPackages, addScript } from '../utils/package'
+import { addPackages, addScript, getPackageManager } from '../utils/package'
 
 export async function prettierConfig() {
   const spinner = log.step('Adding Prettier configuration...')
-  await addPackages(['prettier', '@significa/prettier-config'], { dev: true })
 
   // Add config file
-  const configPath = path.join(process.cwd(), '.prettierrc.js')
+  const configPath = path.join(process.cwd(), '.prettierrc')
 
   if (fs.existsSync(configPath)) {
+    const packageManager = await getPackageManager()
     return spinner.fail(
-      '.prettierrc.js already exists. To avoid conflicts, we have not modified it. Please refer to https://github.com/significa/significa-style for instructions on how to configure prettier.'
-    ) // TODO: Add link
+      `Could not add Prettier: .prettierrc already exists. To avoid conflicts, we have not modified it.\n
+    To include it manually, run:\n
+    ${
+      packageManager === 'yarn'
+        ? `yarn add --dev prettier @significa/prettier-config`
+        : `npm i --save-dev prettier @significa/prettier-config`
+    }\n
+    echo '"@significa/prettier-config"' >> .prettierrc\n`
+    )
   }
 
-  const configContent = `module.exports = require("@significa/prettier-config");`
+  // Add dependencies
+  await addPackages(['prettier', '@significa/prettier-config'], { dev: true })
+
+  const configContent = `"@significa/prettier-config"`
   fs.writeFileSync(configPath, configContent)
 
   // Add script

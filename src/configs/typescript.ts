@@ -4,34 +4,48 @@ import path from 'path'
 import jsonfile from 'jsonfile'
 
 import log from '../utils/log'
-import { addPackages, addScript } from '../utils/package'
+import { addPackages, addScript, hasDependency } from '../utils/package'
 
 export function typescriptConfig() {
   const spinner = log.step('Adding typescript configuration...')
-  addPackages(['typescript', '@significa/tsconfig-config'], { dev: true })
 
-  // Add config file
+  const extendsContent = hasDependency('react-native')
+    ? './node_modules/@significa/tsconfig-config/react-native.json'
+    : './node_modules/@significa/tsconfig-config/index.json'
+
   const configPath = path.join(process.cwd(), 'tsconfig.json')
 
+  let configContent = {
+    extends: extendsContent,
+  }
+
   if (fs.existsSync(configPath)) {
-    return spinner.fail(
-      'tsconfig.json already exists. To avoid conflicts, we have not modified it. Please refer to https://github.com/significa/significa-style for instructions on how to configure typescript.'
-    ) // TODO: Add link
+    try {
+      const file = fs.readFileSync(configPath, 'utf8')
+      const config = JSON.parse(file)
+
+      // tsconfig only allows one `extends`. it's safer to fail and provide manual instructions.
+      if (config.extends) {
+        throw new Error()
+      }
+
+      configContent = {
+        extends: extendsContent,
+        ...config,
+      }
+    } catch (error) {
+      return spinner.fail(
+        `tsconfig.json already exists with an 'extends' key. To avoid conflicts, we have not modified it.\n
+    Please refer to https://github.com/significa/significa-style/tree/master/packages/tsconfig-config for instructions on how to configure it.\n
+        `
+      )
+    }
   }
 
-  const configContent = {
-    extends: './node_modules/@significa/tsconfig-config/index.json',
-  }
+  addScript('validate:types', 'tsc --noEmit')
+
+  addPackages(['typescript', '@significa/tsconfig-config'], { dev: true })
   jsonfile.writeFileSync(configPath, configContent, { spaces: 2 })
-
-  // Add script
-  try {
-    addScript('validate:types', 'tsc --noEmit')
-  } catch {
-    return spinner.fail(
-      'Failed to add typescript script to package.json. Please refer to https://github.com/significa/significa-style for instructions on how to configure typescript.'
-    )
-  }
 
   spinner.succeed('Added typescript configuration')
 }

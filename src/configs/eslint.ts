@@ -4,34 +4,52 @@ import path from 'path'
 import jsonfile from 'jsonfile'
 
 import log from '../utils/log'
-import { addPackages, addScript } from '../utils/package'
+import { addPackages, addScript, hasDependency } from '../utils/package'
 
 export async function eslintConfig() {
   const spinner = log.step('Adding ESLint configuration...')
-  await addPackages(['eslint', '@significa/eslint-config'], { dev: true })
 
-  // Add config file
-  const configPath = path.join(process.cwd(), '.eslintrc.json')
-
-  if (fs.existsSync(configPath)) {
-    return spinner.fail(
-      '.eslintrc.json already exists. To avoid conflicts, we have not modified it. Please refer to https://github.com/significa/significa-style for instructions on how to configure the eslint plugin.'
-    ) // TODO: Add link
-  }
-
-  const eslintrcContent = {
-    extends: ['@significa'],
-  }
-  jsonfile.writeFileSync(configPath, eslintrcContent, { spaces: 2 })
-
-  // Add script
   try {
+    const ext = ['@significa']
+    if (hasDependency('react')) {
+      ext.push('@significa/eslint-config/react')
+    }
+
+    let configContent = {
+      extends: ext,
+    }
+
+    const configPath = path.join(process.cwd(), '.eslintrc.json')
+
+    if (fs.existsSync(configPath)) {
+      const file = fs.readFileSync(configPath, 'utf8')
+      const config = JSON.parse(file)
+
+      if (config.extends) {
+        configContent = {
+          extends: Array.isArray(config.extends)
+            ? [...config.extends, ...ext]
+            : [config.extends, ...ext],
+        }
+      } else {
+        configContent = {
+          extends: ext,
+          ...config,
+        }
+      }
+    }
+
     addScript('lint', 'eslint "src/**/*.{js,jsx,ts,tsx}"')
-  } catch {
+
+    await addPackages(['eslint', '@significa/eslint-config'], { dev: true })
+    jsonfile.writeFileSync(configPath, configContent, { spaces: 2 })
+
+    spinner.succeed('Added ESLint configuration')
+  } catch (error) {
     return spinner.fail(
-      'Failed to add eslint script to package.json. Please refer to https://github.com/significa/significa-style for instructions on how to configure eslint.'
+      `Could not add Eslint.\n
+    Please refer to https://github.com/significa/significa-style/tree/master/packages/eslint-config for instructions on how to configure it.\n
+      `
     )
   }
-
-  spinner.succeed('Added ESLint configuration')
 }
