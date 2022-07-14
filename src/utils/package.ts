@@ -51,6 +51,16 @@ export function addScript(key: string, value: string, safe = false) {
   jsonfile.writeFileSync(packagePath, content, { spaces: 2 })
 }
 
+export function hasDependency(name: string) {
+  const packagePath = path.join(process.cwd(), 'package.json')
+  const content = jsonfile.readFileSync(packagePath)
+
+  return (
+    (Object.keys(content.dependencies) || []).includes(name) ||
+    (Object.keys(content.devDependencies) || []).includes(name)
+  )
+}
+
 export async function getPackageManager(): Promise<PackageManager> {
   // detects package manager, if package-lock.json exists, it's probably npm, if yarn.lock exists, it's probably yarn. Otherwise, ask
   const packageLockPath = path.join(process.cwd(), 'package-lock.json')
