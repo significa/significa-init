@@ -70,7 +70,7 @@ class SignificaStart extends Command {
               checked: true,
             },
             {
-              name: '.nvmrc',
+              name: 'NVM',
               value: 'nvmrc',
               checked: true,
             },
@@ -89,7 +89,7 @@ class SignificaStart extends Command {
     }
 
     // Install dependencies
-    const installSpinner = log.step('Installing dependencies')
+    const installSpinner = log.step('Finalizing...')
     execSync(`${packageManager} install`)
     installSpinner.succeed()
 
