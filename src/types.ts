@@ -5,6 +5,7 @@ const configKeys = [
   'gh-actions',
   'gh-templates',
   'husky',
+  'nvmrc',
 ] as const
 export type ConfigKey = typeof configKeys[number]
 
