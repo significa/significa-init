@@ -69,6 +69,11 @@ class SignificaStart extends Command {
               value: 'husky',
               checked: true,
             },
+            {
+              name: '.nvmrc',
+              value: 'nvmrc',
+              checked: true,
+            },
           ],
         })
       ).configs

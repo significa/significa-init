@@ -3,6 +3,7 @@ import { eslintConfig } from './eslint'
 import { githubActionsConfig } from './githubActions'
 import { githubTemplatesConfig } from './githubTemplates'
 import { huskyConfig } from './husky'
+import { nvmrcConfig } from './nvmrc'
 import { prettierConfig } from './prettier'
 import { typescriptConfig } from './typescript'
 
@@ -25,6 +26,9 @@ export async function runConfig(key: ConfigKey) {
       break
     case 'husky':
       await huskyConfig()
+      break
+    case 'nvmrc':
+      await nvmrcConfig()
       break
     default:
       return null
