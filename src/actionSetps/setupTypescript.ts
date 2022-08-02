@@ -6,7 +6,7 @@ import jsonfile from 'jsonfile'
 import log from '../utils/log'
 import { addPackages, addScript, hasDependency } from '../utils/package'
 
-export function typescriptConfig() {
+export async function setupTypescript() {
   const spinner = log.step('Adding typescript configuration...')
 
   const extendsContent = hasDependency('react-native')

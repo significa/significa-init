@@ -18,7 +18,6 @@ Make sure your working tree is cleant to avoid loosing changes.
 - Help: `npx @significa/init --help`;
 - Version: `npx @significa/init --version`.
 
-
 ## Development
 
 - Install dependencies `npm install`;

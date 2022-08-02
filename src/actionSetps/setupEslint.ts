@@ -6,7 +6,7 @@ import jsonfile from 'jsonfile'
 import log from '../utils/log'
 import { addPackages, addScript, hasDependency } from '../utils/package'
 
-export async function eslintConfig() {
+export async function setupEslint() {
   const spinner = log.step('Adding ESLint configuration...')
 
   try {
