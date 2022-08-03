@@ -5,13 +5,13 @@ import chalk from 'chalk'
 import figlet from 'figlet'
 import inquirer from 'inquirer'
 
-import { addPackageJsonScript } from './actionSetps/addPackageJsonScript'
-import { copyDir } from './actionSetps/copyDir'
-import { installPackages } from './actionSetps/installPackages'
-import { partial, runSteps } from './actionSetps/runSteps'
-import { setupEslint } from './actionSetps/setupEslint'
-import { setupPrettier } from './actionSetps/setupPrettier'
-import { setupTypescript } from './actionSetps/setupTypescript'
+import { addPackageJsonScript } from './actionSteps/addPackageJsonScript'
+import { copyDir } from './actionSteps/copyDir'
+import { installPackages } from './actionSteps/installPackages'
+import { runSteps } from './actionSteps/runSteps'
+import { setupEslint } from './actionSteps/setupEslint'
+import { setupPrettier } from './actionSteps/setupPrettier'
+import { setupTypescript } from './actionSteps/setupTypescript'
 import { action } from './types'
 import log from './utils/log'
 import { getPackageManager } from './utils/package'
@@ -20,41 +20,40 @@ const ACTIONS: action[] = [
   {
     id: 'eslint',
     name: 'ESLint',
-    enabledByDetault: true,
-    setps: [setupEslint],
+    enabledByDefault: true,
+    run: setupEslint,
   },
   {
     id: 'prettier',
     name: 'Prettier',
-    enabledByDetault: true,
-    setps: [setupPrettier],
+    enabledByDefault: true,
+    run: setupPrettier,
   },
   {
     id: 'typescript',
     name: 'Typescript',
-    enabledByDetault: true,
-    setps: [setupTypescript],
+    enabledByDefault: true,
+    run: setupTypescript,
   },
   {
     id: 'gh-actions',
     name: 'Github actions',
-    enabledByDetault: true,
-    setps: [partial(copyDir, './templates/github-actions')],
+    enabledByDefault: true,
+    run: async () => copyDir('./templates/github-actions'),
   },
   {
     id: 'gh-templates',
     name: 'Github templates',
-    enabledByDetault: true,
-    setps: [partial(copyDir, './templates/github-templates')],
+    enabledByDefault: true,
+    run: async () => copyDir('./templates/github-templates'),
   },
   {
     id: 'husky',
     name: 'Husky',
-    enabledByDetault: true,
-    setps: [
-      partial(copyDir, './templates/husky'),
-      partial(
-        installPackages,
+    enabledByDefault: true,
+    run: async () => {
+      await copyDir('./templates/husky')
+      await installPackages(
         [
           'husky',
           '@commitlint/cli',
@@ -62,26 +61,24 @@ const ACTIONS: action[] = [
           'lint-staged',
         ],
         { dev: true }
-      ),
-      partial(addPackageJsonScript, 'postinstall', 'husky install', false),
-    ],
+      )
+      await addPackageJsonScript('postinstall', 'husky install', false)
+    },
   },
   {
     id: 'nvmrc',
     name: '.nvmrc',
-    enabledByDetault: true,
-    setps: [partial(copyDir, './templates/nvmrc')],
+    enabledByDefault: true,
+    run: async () => copyDir('./templates/nvmrc'),
   },
   {
     id: 'install-deps',
     name: 'Install dependencies',
-    enabledByDetault: true,
-    setps: [
-      async () => {
-        const packageManager = await getPackageManager()
-        execSync(`${packageManager} install`)
-      },
-    ],
+    enabledByDefault: true,
+    run: async () => {
+      const packageManager = await getPackageManager()
+      execSync(`${packageManager} install`)
+    },
   },
 ]
 
@@ -116,13 +113,13 @@ class SignificaStart extends Command {
           choices: ACTIONS.map((config) => ({
             value: config.id,
             name: config.name,
-            checked: config.enabledByDetault,
+            checked: config.enabledByDefault,
           })),
         })
       ).configs
 
     ACTIONS.filter((action) => actionIds.includes(action.id)).forEach(
-      (action) => runSteps(action.name, action.setps)
+      (action) => runSteps(action.name, action.run)
     )
 
     log.success('Done! 🎉')

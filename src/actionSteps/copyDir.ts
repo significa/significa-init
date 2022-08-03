@@ -9,7 +9,3 @@ export async function copyDir(sourcePath: string) {
 
   execSync(`cp -r ${sourcePath}/ ${destPath}`)
 }
-
-export function CopyDir(sourcePath: string) {
-  return copyDir.bind(null, sourcePath)
-}

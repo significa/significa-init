@@ -24,6 +24,6 @@ export type PackageManager = typeof packageManagers[number]
 export type action = {
   id: string
   name: string
-  enabledByDetault: boolean
-  setps: Array<(...args: unknown[]) => Promise<unknown>>
+  enabledByDefault: boolean
+  run: (...args: unknown[]) => Promise<unknown>
 }
