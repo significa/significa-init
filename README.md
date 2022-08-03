@@ -5,23 +5,27 @@
 [![Downloads/week](https://img.shields.io/npm/dw/@significa/init.svg)](https://npmjs.org/package/@significa/init)
 [![License](https://img.shields.io/npm/l/@significa/init.svg)](https://github.com/significa/significa-init/blob/main/package.json)
 
-Opinionated Significa's CLI to add configurations to newly created projects.
+Opinionated Significa's CLI to add configurations to new and existing projects.
 
-`npx @significa/init`
+## Usage
 
+Just run `npx @significa/init` in any project directory.
+Make sure your working tree is cleant to avoid loosing changes.
 
-## Commands
+**Commands**
 
-- Regular: `npx @significa/init`;
+- Interactive: `npx @significa/init`;
 - Help: `npx @significa/init --help`;
-- Version: `npx @significa/init --version`;
+- Version: `npx @significa/init --version`.
 
+## Development
 
-Run `npm link` in the directory.
-Use the CLI as `significa-init` anywhere.
+- Install dependencies `npm install`;
+- Run `npm link` in this project's directory;
+- Use `significa-init` anywhere.
 
 ## License
 
-[MIT](https://github.com/Significa/significa-start/blob/master/LICENSE)
+[MIT](./LICENSE)
 
 [![Significa footer](https://user-images.githubusercontent.com/17513388/71971185-fc736b00-3201-11ea-9678-090b6b6a0b3f.png)](https://significa.co)

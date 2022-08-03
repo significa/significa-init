@@ -5,10 +5,82 @@ import chalk from 'chalk'
 import figlet from 'figlet'
 import inquirer from 'inquirer'
 
-import { runConfig } from './configs/runConfig'
-import { isConfigKeyArray } from './types'
+import { addPackageJsonScript } from './actionSteps/addPackageJsonScript'
+import { copyDir } from './actionSteps/copyDir'
+import { installPackages } from './actionSteps/installPackages'
+import { runSteps } from './actionSteps/runSteps'
+import { setupEslint } from './actionSteps/setupEslint'
+import { setupPrettier } from './actionSteps/setupPrettier'
+import { setupTypescript } from './actionSteps/setupTypescript'
+import { action } from './types'
 import log from './utils/log'
 import { getPackageManager } from './utils/package'
+
+const ACTIONS: action[] = [
+  {
+    id: 'eslint',
+    name: 'ESLint',
+    enabledByDefault: true,
+    run: setupEslint,
+  },
+  {
+    id: 'prettier',
+    name: 'Prettier',
+    enabledByDefault: true,
+    run: setupPrettier,
+  },
+  {
+    id: 'typescript',
+    name: 'Typescript',
+    enabledByDefault: true,
+    run: setupTypescript,
+  },
+  {
+    id: 'gh-actions',
+    name: 'Github actions',
+    enabledByDefault: true,
+    run: async () => copyDir('./templates/github-actions'),
+  },
+  {
+    id: 'gh-templates',
+    name: 'Github templates',
+    enabledByDefault: true,
+    run: async () => copyDir('./templates/github-templates'),
+  },
+  {
+    id: 'husky',
+    name: 'Husky',
+    enabledByDefault: true,
+    run: async () => {
+      await copyDir('./templates/husky')
+      await installPackages(
+        [
+          'husky',
+          '@commitlint/cli',
+          '@commitlint/config-conventional',
+          'lint-staged',
+        ],
+        { dev: true }
+      )
+      await addPackageJsonScript('postinstall', 'husky install', false)
+    },
+  },
+  {
+    id: 'nvmrc',
+    name: '.nvmrc',
+    enabledByDefault: true,
+    run: async () => copyDir('./templates/nvmrc'),
+  },
+  {
+    id: 'install-deps',
+    name: 'Install dependencies',
+    enabledByDefault: true,
+    run: async () => {
+      const packageManager = await getPackageManager()
+      execSync(`${packageManager} install`)
+    },
+  },
+]
 
 class SignificaStart extends Command {
   static description = 'Significa project starter'
@@ -31,67 +103,24 @@ class SignificaStart extends Command {
 
     const { args } = this.parse(SignificaStart)
 
-    const configs =
+    const actionIds =
       args.configs ||
       (
         await inquirer.prompt({
           message: 'What configurations would you like to add?',
           type: 'checkbox',
           name: 'configs',
-          choices: [
-            {
-              name: 'ESLint',
-              value: 'eslint',
-              checked: true,
-            },
-            {
-              name: 'Prettier',
-              value: 'prettier',
-              checked: true,
-            },
-            {
-              name: 'Typescript',
-              value: 'typescript',
-              checked: true,
-            },
-            {
-              name: 'Github actions',
-              value: 'gh-actions',
-              checked: true,
-            },
-            {
-              name: 'Github templates',
-              value: 'gh-templates',
-              checked: true,
-            },
-            {
-              name: 'Husky',
-              value: 'husky',
-              checked: true,
-            },
-            {
-              name: 'NVM',
-              value: 'nvmrc',
-              checked: true,
-            },
-          ],
+          choices: ACTIONS.map((config) => ({
+            value: config.id,
+            name: config.name,
+            checked: config.enabledByDefault,
+          })),
         })
       ).configs
 
-    if (!isConfigKeyArray(configs)) {
-      return log.error('Invalid configs selected!')
-    }
-
-    const packageManager = await getPackageManager() // Run once to force creation of package-lock or yarn.lock
-
-    for (const configKey of configs) {
-      await runConfig(configKey)
-    }
-
-    // Install dependencies
-    const installSpinner = log.step('Finalizing...')
-    execSync(`${packageManager} install`)
-    installSpinner.succeed()
+    ACTIONS.filter((action) => actionIds.includes(action.id)).forEach(
+      (action) => runSteps(action.name, action.run)
+    )
 
     log.success('Done! 🎉')
   }

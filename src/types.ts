@@ -7,6 +7,7 @@ const configKeys = [
   'husky',
   'nvmrc',
 ] as const
+
 export type ConfigKey = typeof configKeys[number]
 
 export const isConfigKey = (key: string): key is ConfigKey => {
@@ -19,3 +20,10 @@ export const isConfigKeyArray = (keys: unknown): keys is ConfigKey[] => {
 
 const packageManagers = ['npm', 'yarn'] as const
 export type PackageManager = typeof packageManagers[number]
+
+export type action = {
+  id: string
+  name: string
+  enabledByDefault: boolean
+  run: (...args: unknown[]) => Promise<unknown>
+}

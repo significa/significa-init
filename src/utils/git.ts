@@ -14,6 +14,7 @@ export async function gitInit() {
   }
 
   const spinner = log.step('Initializing git repository')
+
   execSync(`rm -rf .git`)
   execSync(`git init`)
 

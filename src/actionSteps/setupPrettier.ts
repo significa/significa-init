@@ -4,7 +4,7 @@ import path from 'path'
 import log from '../utils/log'
 import { addPackages, addScript, getPackageManager } from '../utils/package'
 
-export async function prettierConfig() {
+export async function setupPrettier() {
   const spinner = log.step('Adding Prettier configuration...')
 
   // Add config file
