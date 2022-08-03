@@ -5,10 +5,10 @@ import chalk from 'chalk'
 import figlet from 'figlet'
 import inquirer from 'inquirer'
 
-import { AddScript } from './actionSetps/addScript'
-import { CopyDir } from './actionSetps/copyDir'
-import { InstallPackages } from './actionSetps/installPackages'
-import { runSteps } from './actionSetps/runSteps'
+import { addPackageJsonScript } from './actionSetps/addPackageJsonScript'
+import { copyDir } from './actionSetps/copyDir'
+import { installPackages } from './actionSetps/installPackages'
+import { partial, runSteps } from './actionSetps/runSteps'
 import { setupEslint } from './actionSetps/setupEslint'
 import { setupPrettier } from './actionSetps/setupPrettier'
 import { setupTypescript } from './actionSetps/setupTypescript'
@@ -39,21 +39,22 @@ const ACTIONS: action[] = [
     id: 'gh-actions',
     name: 'Github actions',
     enabledByDetault: true,
-    setps: [CopyDir('./templates/github-actions')],
+    setps: [partial(copyDir, './templates/github-actions')],
   },
   {
     id: 'gh-templates',
     name: 'Github templates',
     enabledByDetault: true,
-    setps: [CopyDir('./templates/github-templates')],
+    setps: [partial(copyDir, './templates/github-templates')],
   },
   {
     id: 'husky',
     name: 'Husky',
     enabledByDetault: true,
     setps: [
-      CopyDir('./templates/husky'),
-      InstallPackages(
+      partial(copyDir, './templates/husky'),
+      partial(
+        installPackages,
         [
           'husky',
           '@commitlint/cli',
@@ -62,14 +63,14 @@ const ACTIONS: action[] = [
         ],
         { dev: true }
       ),
-      AddScript('postinstall', 'husky install', false),
+      partial(addPackageJsonScript, 'postinstall', 'husky install', false),
     ],
   },
   {
     id: 'nvmrc',
     name: '.nvmrc',
     enabledByDetault: true,
-    setps: [CopyDir('./templates/nvmrc')],
+    setps: [partial(copyDir, './templates/nvmrc')],
   },
   {
     id: 'install-deps',

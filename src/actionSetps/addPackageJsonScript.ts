@@ -2,7 +2,7 @@ import path from 'path'
 
 import jsonfile from 'jsonfile'
 
-export async function addScript(
+export async function addPackageJsonScript(
   scriptName: string,
   value: string,
   overwrite = false
@@ -19,12 +19,4 @@ export async function addScript(
 
   content.scripts[scriptName] = value
   jsonfile.writeFileSync(packagePath, content, { spaces: 2 })
-}
-
-export function AddScript(
-  scriptName: string,
-  value: string,
-  overwrite: boolean
-) {
-  return addScript.bind(undefined, scriptName, value, overwrite)
 }

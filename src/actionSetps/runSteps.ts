@@ -14,3 +14,11 @@ export async function runSteps(name: string, functions: Array<() => void>) {
 
   spinner.succeed('Added Github templates!')
 }
+
+// TODO: improve type
+export function partial(
+  func: (...args: unknown[]) => Promise<unknown>,
+  ...args: unknown[]
+) {
+  return func.bind(undefined, ...args)
+}

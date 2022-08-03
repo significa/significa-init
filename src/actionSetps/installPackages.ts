@@ -6,7 +6,7 @@ type PackageOptions = {
   dev?: boolean
 }
 
-async function installPackages(
+export async function installPackages(
   packageNames: string[],
   options?: PackageOptions
 ) {
@@ -31,11 +31,4 @@ async function installPackages(
     default:
       throw new Error(`Unknown package manager: ${packageManager}`)
   }
-}
-
-export function InstallPackages(
-  packageNames: string[],
-  options?: PackageOptions
-) {
-  return installPackages.bind(undefined, packageNames, options)
 }
